@@ -83,7 +83,7 @@ public class ApplicationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk());
 
-        verify(applicationServiceMock, times(1)).submitApplication(Application.builder()
+        Application expectedApplication = Application.builder()
                 .name("Application Name")
                 .answers(Arrays.asList(Answer.builder()
                                 .questionId("id01")
@@ -93,7 +93,11 @@ public class ApplicationControllerTest {
                                 .questionId("id02")
                                 .answer("answer 2")
                                 .build()))
-                .build());
+                .build();
+
+        expectedApplication.getAnswers().forEach(answer -> answer.setApplication(expectedApplication));
+
+        verify(applicationServiceMock, times(1)).submitApplication(expectedApplication);
     }
 
     @Test
@@ -118,7 +122,7 @@ public class ApplicationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isBadRequest());
 
-        verify(applicationServiceMock, times(1)).submitApplication(Application.builder()
+        Application expectedApplication = Application.builder()
                 .name("Application Name")
                 .answers(Arrays.asList(Answer.builder()
                                 .questionId("id01")
@@ -128,7 +132,11 @@ public class ApplicationControllerTest {
                                 .questionId("id02")
                                 .answer("answer 2")
                                 .build()))
-                .build());
+                .build();
+
+        expectedApplication.getAnswers().forEach(answer -> answer.setApplication(expectedApplication));
+
+        verify(applicationServiceMock, times(1)).submitApplication(expectedApplication);
     }
 
     @Test

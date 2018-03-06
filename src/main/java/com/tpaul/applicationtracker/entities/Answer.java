@@ -1,7 +1,11 @@
 package com.tpaul.applicationtracker.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +18,10 @@ import javax.persistence.Table;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString(exclude = "application")
+@EqualsAndHashCode(exclude = "application")
 @Entity
 @Table(name = "answers")
 public class Answer {

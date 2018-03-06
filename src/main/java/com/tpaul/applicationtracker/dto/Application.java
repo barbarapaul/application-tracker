@@ -21,12 +21,16 @@ public class Application {
     private List<Answer> answers;
 
     public com.tpaul.applicationtracker.entities.Application toEntity() {
-        return com.tpaul.applicationtracker.entities.Application.builder()
+        com.tpaul.applicationtracker.entities.Application application = com.tpaul.applicationtracker.entities.Application.builder()
                 .name(this.name)
                 .answers(this.answers.stream()
                         .map(Answer::toEntity)
                         .collect(Collectors.toList()))
                 .build();
+
+        application.getAnswers().forEach(answer -> answer.setApplication(application));
+
+        return application;
     }
 
     public static Application fromEntity(@NonNull com.tpaul.applicationtracker.entities.Application application) {

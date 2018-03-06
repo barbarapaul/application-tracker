@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
@@ -58,8 +59,12 @@ public class ApplicationRepositoryTest {
                         .build()))
                 .build();
 
+        input.getAnswers().forEach(answer -> answer.setApplication(input));
+
         applicationRepository.save(input);
 
-        assertEquals(1, Lists.newArrayList(applicationRepository.findAll()).size());
+        ArrayList<Application> applications = Lists.newArrayList(applicationRepository.findAll());
+        assertEquals(1, applications.size());
+        assertEquals(1, applications.get(0).getAnswers().size());
     }
 }
