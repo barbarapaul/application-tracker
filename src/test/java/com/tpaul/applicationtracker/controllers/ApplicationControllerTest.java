@@ -18,12 +18,18 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Arrays;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -123,5 +129,41 @@ public class ApplicationControllerTest {
                                 .answer("answer 2")
                                 .build()))
                 .build());
+    }
+
+    @Test
+    public void getApplications() throws Exception {
+        when(applicationServiceMock.getAllApplications()).thenReturn(Arrays.asList(
+                Application.builder()
+                        .name("name 1")
+                        .answers(Arrays.asList(Answer.builder()
+                                        .questionId("questionId 1")
+                                        .answer("answer 1")
+                                        .build(),
+                                Answer.builder()
+                                        .questionId("questionId 2")
+                                        .answer("answer 2")
+                                        .build()))
+                        .build(),
+                Application.builder()
+                        .name("name 2")
+                        .answers(Arrays.asList(Answer.builder()
+                                        .questionId("questionId 1")
+                                        .answer("answer 1")
+                                        .build(),
+                                Answer.builder()
+                                        .questionId("questionId 2")
+                                        .answer("answer 2")
+                                        .build()))
+                        .build()));
+
+        mvc.perform(
+                get("/api/v1/applications"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].name", is(equalTo("name 1"))))
+                .andExpect(jsonPath("$[0].answers", hasSize(2)))
+                .andExpect(jsonPath("$[0].answers[0].id", is(equalTo("questionId 1"))))
+                .andExpect(jsonPath("$[0].answers[0].answer", is(equalTo("answer 1"))));
     }
 }

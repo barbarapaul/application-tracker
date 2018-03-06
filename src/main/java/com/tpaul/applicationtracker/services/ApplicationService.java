@@ -6,6 +6,10 @@ import com.tpaul.applicationtracker.repositories.ApplicationRepository;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 @Service
 public class ApplicationService {
 
@@ -26,4 +30,9 @@ public class ApplicationService {
         }
     }
 
+    public List<Application> getAllApplications() {
+        return StreamSupport
+                .stream(applicationRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
+    }
 }

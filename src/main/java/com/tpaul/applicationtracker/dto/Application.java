@@ -1,14 +1,17 @@
 package com.tpaul.applicationtracker.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Application {
@@ -22,6 +25,15 @@ public class Application {
                 .name(this.name)
                 .answers(this.answers.stream()
                         .map(Answer::toEntity)
+                        .collect(Collectors.toList()))
+                .build();
+    }
+
+    public static Application fromEntity(@NonNull com.tpaul.applicationtracker.entities.Application application) {
+        return Application.builder()
+                .name(application.getName())
+                .answers(application.getAnswers().stream()
+                        .map(Answer::fromEntity)
                         .collect(Collectors.toList()))
                 .build();
     }
