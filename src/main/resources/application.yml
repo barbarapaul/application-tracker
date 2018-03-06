@@ -12,3 +12,8 @@ spring:
     url: jdbc:hsqldb:mem:demo;sql.syntax_pgs=true
     hikari:
       auto-commit: false
+questions:
+  - id: id01
+    answers: answer 1, answer 2
+  - id: id02
+    answers: answer 2, answer 3
