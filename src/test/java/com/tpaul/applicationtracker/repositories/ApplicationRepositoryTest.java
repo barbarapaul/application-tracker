@@ -2,6 +2,7 @@ package com.tpaul.applicationtracker.repositories;
 
 import com.tpaul.applicationtracker.entities.Answer;
 import com.tpaul.applicationtracker.entities.Application;
+import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,4 +46,20 @@ public class ApplicationRepositoryTest {
         assertEquals("answer", answer.getAnswer());
     }
 
+    @Test
+    public void findAll() {
+        assertEquals(0, Lists.newArrayList(applicationRepository.findAll()).size());
+
+        Application input = Application.builder()
+                .name("name")
+                .answers(Collections.singletonList(Answer.builder()
+                        .questionId("questionId")
+                        .answer("answer")
+                        .build()))
+                .build();
+
+        applicationRepository.save(input);
+
+        assertEquals(1, Lists.newArrayList(applicationRepository.findAll()).size());
+    }
 }
