@@ -1,0 +1,14 @@
+info:
+  component: applicationtracker
+server:
+  port: 8080
+
+---
+
+spring:
+  profiles: test
+  datasource:
+    driverClassName: org.hsqldb.jdbc.JDBCDriver
+    url: jdbc:hsqldb:mem:demo;sql.syntax_pgs=true
+    hikari:
+      auto-commit: false
